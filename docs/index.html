@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .small { font-size: .8em; }
+      .small h2, .small h3 {
+        margin: .5em 0;
+      }
+      .grey, .grey a { color: #aaa; }
+
+      .exo {
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e5e5e5+46,e5e5e5+46,e5e5e5+48,ffffff+100 */
+        background: #e5e5e5; /* Old browsers */
+        background: -moz-radial-gradient(center, ellipse cover,  #e5e5e5 46%, #e5e5e5 46%, #e5e5e5 48%, #ffffff 100%); /* FF3.6-15 */
+        background: -webkit-radial-gradient(center, ellipse cover,  #e5e5e5 46%,#e5e5e5 46%,#e5e5e5 48%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+        background: radial-gradient(ellipse at center,  #e5e5e5 46%,#e5e5e5 46%,#e5e5e5 48%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      }
+      .exo h2 {
+        font-family: 'Ubuntu Mono';
+        font-size: 1.5em;
+        margin-bottom: .25em;
+      }
+      .exo .remark-code {
+        border: 1px solid #bbb;
+        padding: .75em;
+        margin-bottom: 2.5em;
+      }
+      .list-large li { font-size: 1.3em; line-height: 1.1; padding-bottom: .5em; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Formation NodeJS
+
+## Brolliet - 5 et 6 Juin 2019 
+
+---
+
+class: center, middle
+
+# À propos de moi
+
+Simon Tarchichi ([s.tarchichi@neurones.pro](mailto:s.tarchichi@neurones.pro))
+
+Développeur "full stack" JS & concepteur de l'application eBrolliet
+
+15 ans d'expérience web (PHP & JavaScript)
+
+---
+
+class: center, middle
+
+# Parlez-moi de vous!
+
+???
+Petit tour de table:
+- Quelle(s) techno de prédilection?
+- Connaissez-vous Javascript ?
+- Avez-vous déja entendu parler ou fait du NodeJS?
+
+---
+
+# Objectifs
+
+### Session 1: NodeJS
+
+Appréhender les bases de NodeJS et du développement d'une application Javascript côté serveur.
+
+_du 5 au 6 juin 2019_
+
+### Session 2: eBrolliet
+
+Découvrir les différents composants de l'application eBrolliet et développement de quelques fonctionnalités simples.
+
+_date inconnue (5 jours)_
+
+---
+
+# Agenda
+
+## Jour 1
+
+1. Historique
+1. NodeJS: les bases
+1. NPM: le package manager
+1. Syntaxe
+
+## Jour 2
+
+1. Environnement de dev
+1. JS Asynchrone
+1. Exercices
+
+---
+
+# Historique
+
+## JavaScript
+
+- Né en 1995, destiné aux navigateurs web
+- Standardisé en 2010 (ES5) : naissance du JS "moderne"
+- Devenu language "universel"
+
+???
+"universel" = utilisé dans plusieurs domaines (robotique, IoT, etc.)
+
+--
+
+## NodeJS
+
+- Né en 2010, destiné à une utilisation "serveur web"
+- Développé par "Joyent", entreprise privée
+- Fork en 2014 (io.js)
+- v4 en 2015
+- v12 depuis 04/2019 (v10 LTS)
+
+???
+"serveur web" = I/O non bloquantes
+
+---
+
+# Concepts fondamentaux
+
+- Language interprété
+???
+interprété = non compilé
+--
+
+- JavaScript engine
+???
+## Engines
+Chrome V8 (aussi utilisé par NodeJS)
+
+SpiderMonkey (Mozilla Firefox)
+
+Chakra (MS Edge)
+--
+
+- Multi-plateformes
+--
+
+- "Programme NodeJS" = script
+--
+
+- ~~Navigateur web~~
+???
+## ~~Navigateur~~
+
+Même moteur d'interprétation mais dans un contexte différent. Pas de "page web" (DOM) en NodeJS.
+---
+
+# Pourquoi NodeJS ?
+
+NodeJS est **rapide** grâce à un système d'opérations non-bloquantes.
+
+???
+JavaScript est un language *single-threaded*.
+
+Cela permet au script de s'éxécuter de façon non linéaire.
+--
+
+#### Event Loop
+
+L'*Event Loop* est démarrée après initialisation du script Node.
+
+Elle permet de tirer profit de la puissance du CPU en incluant une phase "d'attente" (*poll*) qui ne fait rien si aucune tâche n'est à traiter, et gère les taches par ordre de priorité s'il y en a.
+--
+
+#### Cycle de vie
+
+1. Mise en place du script (1ère éxécution)
+1. Démarrage de l'Event Loop
+1. Gestion des tâches au fur et à mesure de leur arrivée
+1. Fin du process
+
+.small.grey[ Réf. https://nodejs.org/fr/docs/guides/event-loop-timers-and-nexttick/]
+
+???
+## Event Loop
+
+Tout indiquée pour un serveur Web!
+
+Sert aussi à attendre les retours de l'extérieur comme un appel DB, ou la communication avec une API par exemple.
+
+---
+
+class: center, middle
+
+# Développer en NodeJS
+
+???
+
+Pause?
+
+---
+
+# NodeJS: les bases
+
+## Installation
+
+- Install LTS version depuis [NodeJS.org](https://nodejs.org/en/download/)
+- Inclus
+  - le moteur JS Chrome V8
+  - le binaire `node`
+  - le gestionnaire de paquet `npm`
+
+--
+
+## Utilisation
+
+```bash
+$ node mon_script.js
+```
+--
+```bash
+Hello World!
+```
+
+---
+
+class: exo
+
+# Hello World!
+
+## mon_script.js
+
+```javascript
+console.log('Hello World')
+```
+
+## Console
+
+```bash
+$ node mon_script.js
+```
+
+---
+
+# NodeJS: les bases
+
+## Fichiers .js
+
+L'extension des scripts NodeJS est **.js** comme les fichiers que l'on trouve sur le web.
+
+> Attention à **ne pas confondre les fichiers JS "navigateur"** !
+> On ne peut pas éxécuter un fichier fait pour le navigateur dans Node, et vice-versa.
+
+--
+
+#### Exemple
+
+```javascript
+const name = 'Simon'
+console.log('Hello %s!', name)
+process.exit(0)
+```
+
+##### Exécution du script
+
+```bash
+$ node hello.js
+Hello Simon!
+```
+
+???
+
+Le langage serveur et navigateur est **le même**... La confusion est possible mais attention lors des recherches Internet au code utilisé.
+
+---
+
+# NodeJS: les bases
+
+***La syntaxe JavaScript est très (trop?) permissive!***
+
+???
+Dans un navigateur on doit prendre en compte les contraintes du navigateur, qui ont chacun un moteur différent.
+
+Dans Node, seule la version change les possibilités. On a plus de liberté de choix de syntaxe.
+
+--
+
+#### Exemple: assigner une variable
+
+```javascript
+const name = 'Simon' // ok
+const name = "Simon" // ok
+const name = "Simon"; // ok
+const name = Simon; // Impossible: les "strings" doivent être échappés
+```
+
+--
+
+### EcmaScript 2015 (aka ES6)
+
+```javascript
+// ES5
+var name = 'Simon'
+// ES6
+const name = 'Simon'
+let name = 'Simon'
+```
+
+???
+
+## EcmaScript
+
+On y revient bientot!
+
+---
+
+class: center, middle
+
+# À retenir
+
+### Même langage côté serveur et navigateur
+
+_environnement/contexte différent_
+
+### Syntaxe permissive
+
+_exemples disponibles sur Internet assez variés_
+
+---
+
+# NodeJS: les bases
+
+## Process
+
+Un script Node est éxécuté dans un process individuel (*single-threaded*) par le système d'exploitation.
+
+C'est donc un programme du serveur à part entière et est soumis aux mêmes règles (permissions, error handling, etc.).
+
+--
+
+## Child process
+
+Le process principal (accessible par la variable globale `process`) peut démarrer des *child process*, les arrêter et les terminer à sa guise.
+
+Le *child process* peut être n'importe quel binaire (auquel le script a accès bien sûr) et est géré par l'*event loop*.
+
+???
+Beaucoup de possibilités:
+- éxécution de routines serveur
+- traitements par applications tierces
+- opérations longues et couteuses en CPU
+
+Certaines librairies Node contiennent des binaires qui sont compilés lors de leur installation (cf section NPM) qui sont éxécutés dans des *child process*.
+
+---
+
+# NodeJS: les bases
+
+Javascript est un langage _modulaire_. Il est courant de diviser son code en un ensemble de petits fichiers.
+
+???
+
+On évite les fichiers à rallonge pour préserver la lisibilité du code
+
+--
+
+## CommonJS
+
+CommonJS est le nom de la syntaxe qui permet d'écrire un module JavaScript
+
+#### mon_module.js
+
+```javascript
+module.exports = {
+  name: 'Simon'
+}
+```
+
+#### mon_script.js
+
+```javascript
+const monModule = require('./mon_module')
+
+console.log(monModule.name)
+```
+
+---
+
+class: exo
+
+# Hello ??? !
+
+#### mon_module.js
+
+```javascript
+module.exports = {
+  name: 'Simon'
+}
+```
+
+#### mon_script.js
+
+```javascript
+const monModule = require('./mon_module')
+
+console.log('Hello %s!', monModule.name)
+```
+
+???
+
+A tester, juste pour voir:
+
+```javascript
+console.log(monModule)
+```
+
+---
+
+# NPM: Node Package Manager
+
+On peut **packager** les modules pour les distribuer.
+
+NPM sert à télécharger des modules/librairies JavaScript (NodeJS et browser!), et à maintenir les **dépendances** d'une application NodeJS.
+
+```bash
+~/dev ■ cd nodejs_app
+~/dev/nodejs_app ■ npm init
+```
+
+???
+
+Je montre sur mon terminal
+
+--
+
+.small[
+#### Version courte]
+
+```bash
+~/dev/nodejs_app ■ npm init -y
+Wrote to /Users/simon/dev/nodejs_app/package.json:
+
+{
+  "name": "nodejs_app",
+  "version": "1.0.0",
+  "description": "Mon application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": []
+}
+```
+
+???
+
+A faire sur vos machines
+
+---
+
+# NPM: Node Package Manager
+
+## Anatomie du package.json: `name`
+
+```json
+{
+* "name": "nodejs_app",
+  "version": "1.0.0",
+  "description": "Mon application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": []
+}
+```
+
+Le **nom de l'application ou du package**. Il est utilisé sur NPM comme référence.
+
+Ex: https://www.npmjs.com/package/store pour le package `store`
+
+---
+
+# NPM: Node Package Manager
+
+## Anatomie du package.json: `main`
+
+```json
+{
+  "name": "nodejs_app",
+  "version": "1.0.0",
+  "description": "Mon application",
+* "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": []
+}
+```
+
+Le **script principal** qui sera éxécuté par `npm start`.
+
+Dans ce cas, ces 2 commandes sont équivalentes:
+
+```bash
+$ npm start
+$ node index.js
+```
+
+---
+
+# NPM: Node Package Manager
+
+## Anatomie du package.json: `scripts`
+
+```json
+{
+  "name": "nodejs_app",
+  "version": "1.0.0",
+  "description": "Mon application",
+  "main": "index.js",
+* "scripts": {
+*   "routine": "node scripts/maroutine.js",
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": []
+}
+```
+
+Les **scripts** configurés pour être éxécutés facilement via NPM.
+
+```bash
+$ npm run routine
+$ node scripts/maroutine.js
+```
+
+---
+
+# NPM: Node Package Manager
+
+#### Initialiser une application
+
+```bash
+npm init -y
+```
+
+#### Ajouter un package
+
+```bash
+npm install lodash
+```
+
+#### Enlever un package
+
+```bash
+npm remove lodash
+```
+
+#### Mettre à jour un package
+
+```bash
+npm update lodash
+```
+
+---
+
+# NPM: Node Package Manager
+
+#### Ajout du package `chalk`
+
+```bash
+$ npm install chalk // raccourci: npm i chalk
+```
+
+#### `package.json`
+
+```json
+{
+  "name": "nodejs_app",
+  "version": "1.0.0",
+  "description": "Mon application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+*   "chalk": "^2.4.2"
+  }
+}
+```
+
+???
+
+A noter que la version du package est indiquée également.
+
+---
+
+class: exo
+
+# Utilisation du package `chalk`
+
+#### `index.js`
+
+```javascript
+const chalk = require('chalk')
+
+// la variable chalk contient le package
+
+console.log(chalk.blue('Hello world!'))
+```
+
+Doc: https://www.npmjs.com/package/chalk
+
+---
+
+# NPM: Rechercher un package
+
+### 2 méthodes
+
+1. Directement sur npmjs.org
+1. Google
+
+### Critères de choix
+
+- Nb de téléchargements sur npmjs.org
+- Dernière mise à jour
+- Documentation
+- Github stars
+- Ouvrir le code
+
+--
+
+### Cas pratique
+
+**Rechercher un module Oracle**
+
+???
+
+Ajouter le module à notre application
+
+---
+
+# Syntaxe
+
+### EcmaScript
+
+Spécifications de JavaScript qui ont évolué avec le temps.
+
+**Grosse évolution en 2015** avec ES6 (aka EcmaScript 2015) qui introduit certains nouveaux concepts et une syntaxe plus fluide.
+
+### Transpileurs
+
+**Côté navigateurs**, le support d'ES6 n'est pas complet, surtout sur les navigateurs anciens ([Source](https://caniuse.com/#feat=es6)). On peut tout de même utiliser cette syntaxe à l'aide du transpileur Babel.
+
+Il existe aussi des languages qui sont transpilés en JS:
+- TypeScript: version "typée" de JS
+- Elm: functional language
+- Dart: langage orienté objet par Google
+- CoffeeScript: syntaxe plus "propre"
+
+???
+
+En NodeJS, on peut utiliser ES6, sans transpileur (car on utilise l'engine V8)
+
+Par contre attention aux exemples que vous trouverez sur Internet qui sont parfois en ES5.
+
+---
+
+# Syntaxe
+
+### Types de variable
+
+.list-large[
+- Number
+- Boolean
+- String
+- `null`
+- `undefined`
+- Object
+]
+
+#### Opérateur `typeof`
+```javascript
+const numero = 3
+
+console.log(typeof numero) // renvoie 'number'
+```
+
+???
+
+Number = int, float, etc. sont tous des `Number`
+
+null = valeur inconnue
+
+undefined = valeur ou variable non définie
+
+Object = structure plus complexe
+
+---
+
+# Syntaxe
+
+### Variables
+
+#### Définir une variable: `const` ou `let` ?
+
+```javascript
+*const numero = 3
+
+numero++ // Erreur! on ne peut pas modifier une valeur définie avec `const`
+
+*for (let i = 0; i < 2; i++) {
+  console.log(i) // OK, la valeur de i est définie et modifiée au fur et a mesure
+}
+console.log(i) // Erreur! 'i' n'est définie que dans le cadre de la boucle for
+```
+
+#### À retenir
+
+**`const`**: la variable ne sera pas modifiée dans le script
+
+**`let`**: la variable sera modifiée
+
+**`var`**: ancienne syntaxe (ES5), à ne plus utiliser (côté serveur)
+
+---
+
+# Syntaxe
+
+### Chaînes de caractères
+
+#### Concaténer
+
+```javascript
+const chaine1 = 'Hello'
+const chaine2 = 'World'
+
+// ES5
+const chaine = chaine1 + ' ' + chaine2 + '!'
+
+// ES6
+const chaine = `${chaine1} ${chaine2}!`
+```
+
+#### Convertir en chaine de caractères
+
+```javascript
+const numero = 3
+
+const chaine = numero.toString()
+const chaine = String(numero)
+const chaine = numero + ''
+```
+
+---
+
+# Syntaxe
+
+### Fonctions
+
+#### Définir une fonction
+
+```javascript
+// ES5, toujours valide
+function maFonction (a, b) {
+  return a + b
+}
+
+// ES6
+const maFonction = (a, b) => {
+  return a + b
+}
+
+// ES6, version courte
+const maFonction = (a, b) => a + b
+```
+
+#### Appel de fonction
+
+```javascript
+maFonction(1, 2) // renvoie 3
+```
+
+---
+
+# Syntaxe
+
+### Tableaux
+
+```javascript
+// définir un tableau
+let cantons = ['Genève', 'Vaud']
+
+// lire un élément
+cantons[0] // 'Genève'
+
+// ajouter un élément
+cantons.push('Zurich') // ['Genève', 'Vaud', 'Zurich']
+```
+
+### Objets (tableaux associatifs)
+
+```javascript
+// définir un objet
+let cantons = { 'GE': 'Genève' }
+cantons['ZH'] = 'Zurich'
+
+// lire un élément
+cantons['GE'] // 'Genève'
+cantons.GE // 'Genève'
+```
+
+---
+
+class: exo
+
+# Exercices
+
+## Variable globale `console`
+
+- Faire une boucle de 10 000 itérations
+- Afficher le numéro de l'itération
+- Afficher le temps d'éxécution de la boucle
+
+_Note: Utiliser `console.time`_
+
+## Variable globale `process`
+
+- Ecrire un script qui utilise un argument passé en ligne de commande.
+
+_Note: Utiliser `process.argv`_
+
+Résultat attendu :
+
+```bash
+$ node mon_script.js Simon
+Hello Simon!
+```
+
+---
+
+class: exo
+
+# Exercices
+
+## Variables d'environnement
+
+- Modifier le script pour utiliser plutot une variable d'environnement. Résultat attendu:
+
+```bash
+$ NOM=simon node mon_script.js
+Hello Simon!
+```
+
+- Utiliser plutot une variable d'environnement globale. Résultat attendu:
+
+```bash
+$ node mon_script.js
+Hello Simon!
+```
+
+---
+
+class: exo
+
+# Exercices
+
+## Boucle `for`
+
+- Créer un tableau qui contient les chaines de caractères suivantes: "Sean Connery", "Pierce Brosnan", "Brad Pitt"
+- Afficher tous les noms d'acteur avec la commande `console.log`
+- Afficher en rouge (dans la boucle) celui qui n'a jamais joué James Bond à l'aide du package `chalk`
+
+## CommonJS
+
+- "Externaliser" la liste d'acteurs dans un fichier séparé `acteurs.js`
+- Appeler cette liste depuis votre script principal _(le résultat final ne doit pas changer)_
+
+## Objets
+
+- Remplacer la liste de chaine de caractères par une liste d'objets de type <br>`{ name: 'Sean Connery', jamesBond: true }`
+- Afficher en rouge le nom de l'acteur en se basant sur le paramètre `jamesBond` de l'objet _(le résultat final ne doit toujours pas changer)_
+
+---
+
+class: center, middle
+
+# Formation NodeJS
+
+## Brolliet - 5 et 6 Juin 2019 
+
+---
+
+# Agenda
+
+## Jour 1
+
+1. Historique
+1. NodeJS: les bases
+1. NPM: le package manager
+1. Syntaxe
+
+## Jour 2
+
+1. Environnement de dev
+1. JS Asynchrone
+1. Exercices
+
+---
+
+# Environnement de dev
+
+```bash
+$ node -v
+v10.14.2
+
+$ npm -v
+6.4.1
+```
+
+## Editeur de code
+
+**Visual Studio Code** https://code.visualstudio.com/
+
+Extensions: [Getting Started with VS Code for Node.js Development](https://nodesource.com/blog/getting-started-with-vs-code-for-node-js-development)
+
+???
+
+Vérifier que tout le monde l'a déja installé
+
+--
+
+## Linter
+
+Un _linter_ permet de vérifier que la syntaxe est uniforme dans un projet Javascript, en définissant un ensemble de règles ou conventions.
+
+_ESLint_ est le linter Javascript de référence.
+
+???
+
+Faire une démo du linter
+
+---
+
+# Javascript _asynchrone_
+
+La valeur ajoutée de NodeJS tient dans le caractère **asynchrone** des scripts.
+
+Le script _écoute_ des évènements et met en oeuvre des actions _a posteriori_, lorsqu'un évènement est déclenché.
+
+--
+
+### Exemple simple
+
+```javascript
+function apresTroisSecondes () {
+  console.log('3 secondes écoulées')
+}
+
+setTimeout(apresTroisSecondes, 3000)
+console.log('On attend...')
+```
+1. Le script s'éxécute une première fois: mise en place de l'évènement "dans 3 secondes" à l'aide de la fonction native `setTimeout`.
+1. Début de l'_event loop_ (on attend qu'un évènement se déclenche)
+1. 3 secondes plus tard, l'évènement est déclenché et la fonction `apresTroisSecondes()` est appelée
+
+???
+
+Fonction `apresTroisSecondes()` = fonction callback
+
+---
+
+# Exemple: lire la ligne de commande
+
+```javascript
+const readline = require('readline')
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+rl.question('Comment vous appelez-vous ?', function (nom) {
+  console.log(`Hello ${nom}!`)
+
+  rl.close()
+})
+```
+
+Ici, la fonction de callback est _anonyme_, elle est définie "_inline_" sans être assignée à une variable.
+
+???
+
+On en profite pour voir la notion de fonction anonyme...
+
+---
+
+# Exemple: appel d'une API
+
+On utilise ici le module `request`: https://www.npmjs.com/package/request
+
+```javascript
+const request = require('request')
+
+request('http://randomuselessfact.appspot.com/random.txt?lang=en',
+  function (error, response, body) {
+    if (error) {
+      // il y a eu une erreur avec le traitement de la demande
+      throw error
+    }
+    if (response && response.statusCode === 200) {
+      // tout va bien, on a reçu le contenu demandé
+      console.log(body)
+    } else {
+      // une erreur HTTP est survenue
+      console.log(`${response.statusCode} ${response.statusMessage}`)
+    }
+  }
+)
+```
+
+**Question : pourquoi a-t-on utilisé du code asynchrone ?**
+
+???
+
+Enchainement sur un autre cas asynchrone: écriture de fichiers
+
+---
+
+# Callback + callback = ...
+
+On modifie le code pour écrire le résultat de la requête dans un fichier.
+
+```javascript
+const request = require('request')
+const fs = require('fs')
+
+request('http://randomuselessfact.appspot.com/random.txt?lang=en',
+  function (error, response, body) {
+    if (error) {
+      throw error
+    }
+    if (response && response.statusCode === 200) {
+*     fs.writeFile('./fichier.txt', function (error, result) {
+*       if (error) throw error
+*       console.log('OK')
+*     })
+    } else {
+      console.log(`${response.statusCode} ${response.statusMessage}`)
+    }
+  }
+)
+```
+
+--
+
+Bienvenue au _**callback hell**_ qui rend le code illisible...
+
+---
+
+# _callback hell_ : découpage des fonctions
+
+Séparer le code en fonctions
+
+```javascript
+const request = require('request')
+const fs = require('fs')
+
+function retourRequete (error, response, body) {
+  if (error) {
+    throw error
+  }
+  if (response && response.statusCode === 200) {
+    ecrireFichier(body)
+  } else {
+    console.log(`${response.statusCode} ${response.statusMessage}`)
+  }
+}
+
+function ecrireFichier (body) {
+  fs.writeFile('./fichier.txt', body, function (error, result) {
+    if (error) throw error
+    console.log('OK')
+  })
+}
+
+request('http://randomuselessfact.appspot.com/random.txt?lang=en', retourRequete)
+```
+
+???
+
+Le code est un peu plus long, mais:
+
+- plus facile à lire
+- peut etre séparé en modules
+
+---
+
+# _callback hell_ : Promises (ES6)
+
+Utiliser l'interface _Promise_
+
+```javascript
+*const request = require('request-promise-native')
+const fs = require('fs')
+
+request('http://randuselessfact.appspot.com/random.txt?lang=en')
+* .then(function (body) {
+    // code éxécuté en cas de succès
+    fs.writeFile('./fichier.txt', body, function (error, result) {
+      if (error) throw error
+      console.log('OK')
+    })
+  })
+  .catch(function (err) {
+    // code éxécuté en cas d'erreur (rejection de la Promise)
+    console.log('Erreur', err)
+  })
+```
+
+???
+
+On _chaîne_ les méthodes en Javascript, et on reste sur un niveau acceptable d'indentation
+
+---
+
+# _callback hell_ : `async/await` (ES2017)
+
+```javascript
+
+const request = require('request-promise-native')
+const fs = require('fs')
+
+*async function start () {
+* const body = await request('http://randomuselessfact.appspot.com/random.txt?lang=en')
+  fs.writeFile('./fichier.txt', body, function (error, result) {
+    if (error) throw error
+    console.log('OK')
+  })
+}
+
+try {
+  start()
+} catch (err) {
+  console.log('Erreur', err)
+}
+```
+
+???
+
+Méthode indiquée pour référence, mais qu'on explorera pas pendant cette session.
+
+---
+
+# Exercices
+
+#### Client web
+
+_Utiliser `request` pour chercher une page web_
+
+#### Parseur HTML
+
+_Utiliser `cheerio` pour extraire du contenu de cette page web_
+
+#### Serveur web
+
+_Utiliser `express` pour mettre en place un serveur web_
+
+#### Outil ligne de commande
+
+_Faire un outil en ligne de commande pour parser une page web_
+
+<br>
+.small[
+Page web: https://www.hausinfo.ch/fr/home/finances-impots/achat-vente/marche-immobilier.html
+]
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        highlightLines: true,
+      });
+    </script>
+  </body>
+</html>
