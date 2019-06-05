@@ -1010,6 +1010,11 @@ rl.question('Comment vous appelez-vous ?', function (nom) {
 
 Ici, la fonction de callback est _anonyme_, elle est définie "_inline_" sans être assignée à une variable.
 
+.small.grey[
+<br><br><br>
+Source: https://nodejs.org/api/readline.html
+]
+
 ???
 
 On en profite pour voir la notion de fonction anonyme...
@@ -1173,6 +1178,8 @@ Méthode indiquée pour référence, mais qu'on explorera pas pendant cette sess
 
 ---
 
+class: exo
+
 # Exercices
 
 #### Client web
@@ -1191,10 +1198,132 @@ _Utiliser `express` pour mettre en place un serveur web_
 
 _Faire un outil en ligne de commande pour parser une page web_
 
-<br>
 .small[
+<br>
 Page web: https://www.hausinfo.ch/fr/home/finances-impots/achat-vente/marche-immobilier.html
 ]
+.small.grey[
+Consignes: https://github.com/kartsims/formation_nodejs/tree/master/scripts
+]
+
+---
+
+class: exo
+
+# Serveur web
+
+## API: accueil
+
+Ajouter la route suivante au serveur web
+
+```bash
+GET /api
+```
+
+_Résultat (JSON)_
+
+```json
+{"version":"1.0.0"}
+```
+
+Où "1.0.0" est récupéré comme le numéro de version du `package.json`
+
+On peut tester en accédant à la page http://127.0.0.1:8080/api
+
+---
+
+class: exo
+
+# Serveur web
+
+## API: connexion à la BDD
+
+Ajouter une connexion à la BDD Oracle. Ne démarrer l'API qu'une fois que la connexion à la BDD est disponible.
+
+_Bonus: utiliser un fichier `.env` pour stocker les infos de connexion à la BDD_
+
+---
+
+class: exo
+
+# Serveur web
+
+## API: création d'un élément
+
+Ajouter la route suivante à la BDD. Lors d'un appel à cette route, cela ajoute un enregistrement dans la BDD.
+
+```bash
+POST /api/items
+{
+  "name": "Simon"
+}
+```
+
+_Résultat (JSON)_
+
+```json
+{"id":1,"name":"Simon"}
+```
+
+Où "id" est l'ID tel qu'il a été créé dans la BDD
+
+On pourra utiliser Postman pour simuler des appels POST à cette API.
+
+---
+
+class: exo
+
+# Serveur web
+
+## API: liste des éléments
+
+Ajouter la route suivante à la BDD.
+
+```bash
+GET /api/items
+```
+
+_Résultat (JSON)_
+
+```json
+[{"id":1,"name":"Simon"}]
+```
+
+Elle renvoie un tableau avec tous les éléments présents dans la BDD.
+
+---
+
+class: exo
+
+# Serveur web
+
+## API: modifier un élément
+
+Ajouter la route suivante à la BDD.
+
+```bash
+POST /api/items/1
+{
+  "name": "Tarchichi"
+}
+```
+
+_Résultat (JSON)_
+
+```json
+[{"id":1,"name":"Tarchichi"}]
+```
+
+Elle renvoie l'élément modifié tel qu'il est enregistré dans la BDD.
+
+---
+
+class: exo
+
+# Client web
+
+Construire une petite interface qui permet d'exploiter l'API qu'on vient de créer.
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
